@@ -1,10 +1,7 @@
-import { useState } from 'react';
 import './App.css';
 import { ThemeProvider } from '@emotion/react';
-import { theme } from './theme';
-import { AppBar, CssBaseline, Toolbar } from '@mui/material';
+import { AppBar, Button, CssBaseline, Toolbar } from '@mui/material';
 import { Container } from '@mui/system';
-import { Button } from '@mui/base';
 import {
 	RouterProvider,
 	RootRoute,
@@ -13,11 +10,19 @@ import {
 	Route,
 	Link
 } from '@tanstack/router';
+
+import { theme } from './theme';
 import Home from './pages/Home';
+import Login from './pages/Login';
+import { LanguageProvider, useTranslation } from './hooks/useTranslation';
+import { useLoggedInUser } from './hooks/useLoggedInUser';
+import ButtonLink from './components/library/ButtonLink';
+import { signOut } from './firebase';
 
 const rootRoute = new RootRoute({
 	component: () => {
-		const tbd = 'hey';
+		const user = useLoggedInUser();
+		const t = useTranslation();
 
 		return (
 			<ThemeProvider theme={theme}>
@@ -25,7 +30,11 @@ const rootRoute = new RootRoute({
 				<AppBar position="fixed">
 					<Container maxWidth="sm">
 						<Toolbar disableGutters sx={{ gap: 3 }}>
-							<Button>TBD</Button>
+							{!user ? (
+								<ButtonLink to="/login">{t('login')}</ButtonLink>
+							) : (
+								<Button onClick={signOut}>{t('logout')}</Button>
+							)}
 						</Toolbar>
 					</Container>
 				</AppBar>
@@ -56,7 +65,13 @@ const indexRoute = new Route({
 	component: Home
 });
 
-const routeTree = rootRoute.addChildren([indexRoute]);
+const loginRoute = new Route({
+	getParentRoute: () => rootRoute,
+	path: '/login',
+	component: Login
+});
+
+const routeTree = rootRoute.addChildren([indexRoute, loginRoute]);
 
 const router = new Router({ routeTree });
 declare module '@tanstack/router' {
@@ -66,6 +81,10 @@ declare module '@tanstack/router' {
 	}
 }
 
-const App = () => <RouterProvider router={router} />;
+const App = () => (
+	<LanguageProvider>
+		<RouterProvider router={router} />
+	</LanguageProvider>
+);
 
 export default App;
