@@ -21,6 +21,7 @@ import ButtonLink from './components/library/ButtonLink';
 import { signOut } from './firebase';
 import 'dayjs/locale/de';
 import 'dayjs/locale/en-gb'; //TODO
+import SearchResult from './pages/SearchResult';
 
 const rootRoute = new RootRoute({
 	component: () => {
@@ -75,7 +76,36 @@ const loginRoute = new Route({
 	component: Login
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute]);
+type Search = {
+	city: string;
+	sport?: string;
+	date?: string;
+	startTime?: number;
+	endTime?: number;
+	multisport?: boolean;
+	isic?: boolean;
+	freeParking?: boolean;
+	beverage?: boolean;
+};
+
+export const searchRoute = new Route({
+	getParentRoute: () => rootRoute,
+	path: 'search',
+	validateSearch: (search: Record<string, unknown>): Search => ({
+		city: (search.city as string) ?? 'Praha', //TODO
+		sport: search.sport as string,
+		date: search.date as string,
+		startTime: search.startTime as number,
+		endTime: search.endTime as number,
+		multisport: search.multisport as boolean,
+		isic: search.isic as boolean,
+		freeParking: search.freeParking as boolean,
+		beverage: search.beverage as boolean
+	}),
+	component: SearchResult
+});
+
+const routeTree = rootRoute.addChildren([indexRoute, loginRoute, searchRoute]);
 
 const router = new Router({ routeTree });
 declare module '@tanstack/router' {

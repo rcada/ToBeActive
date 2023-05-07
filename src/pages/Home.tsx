@@ -1,5 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { useNavigate } from '@tanstack/router';
+import dayjs from 'dayjs';
 
 import usePageTitle from '../hooks/usePageTitle';
 import useLoggedInUser from '../hooks/useLoggedInUser';
@@ -22,7 +23,11 @@ const Home = () => {
 					Sign in or register
 				</Button>
 			)}
-			<Searcher />
+			<Searcher
+				initialValues={{
+					date: dayjs(Date.now())
+				}}
+			/>
 		</>
 	);
 };
