@@ -16,16 +16,13 @@ export const FormTextField: React.FC<FormTextFieldProps> = ({
 		validate={required ? value => (value ? false : true) : () => {}}
 		name={name}
 	>
-		{props => {
-			console.log(props.meta.error);
-			return (
-				<TextField
-					error={props.meta.error}
-					helperText={props.meta.error ? 'Required' : undefined}
-					{...props.input}
-					{...rest}
-				/>
-			);
-		}}
+		{props => (
+			<TextField
+				error={props.meta.error}
+				helperText={props.meta.error ? 'Required' : undefined}
+				{...props.input}
+				{...rest}
+			/>
+		)}
 	</Field>
 );

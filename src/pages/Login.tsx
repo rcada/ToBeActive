@@ -14,7 +14,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import usePageTitle from '../hooks/usePageTitle';
 import { useTranslation } from '../hooks/useTranslation';
 import Form from '../components/library/form/Form';
-import { FormTextField } from '../components/library/form/FormFields';
+import { FormTextField } from '../components/library/form/FormTextField';
 import { signIn, signUp } from '../firebase';
 
 type LoginValues = {

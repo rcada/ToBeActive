@@ -7,13 +7,13 @@ import {
 	onAuthStateChanged,
 	User
 } from 'firebase/auth';
-// import {
-// 	collection,
-// 	CollectionReference,
-// 	doc,
-// 	DocumentReference,
-// 	getFirestore
-// } from 'firebase/firestore';
+import {
+	collection,
+	CollectionReference,
+	// doc,
+	// DocumentReference,
+	getFirestore
+} from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -47,4 +47,27 @@ export const onAuthChanged = (callback: (u: User | null) => void) =>
 	onAuthStateChanged(auth, callback);
 
 // Firestore
-// const db = getFirestore();
+const db = getFirestore();
+
+// SportsCenters Collection
+export type SportsCenter = {
+	name: string;
+	city: string;
+	openTime: number;
+	closeTime: number;
+	sports: Sport[];
+	multisport: boolean;
+	isic: boolean;
+	beverage: boolean;
+	freeParking: boolean;
+};
+
+export type Sport = {
+	name: string;
+	count: number;
+};
+
+export const sportscentersCollection = collection(
+	db,
+	'sportscenters'
+) as CollectionReference<SportsCenter>;
