@@ -22,6 +22,7 @@ import { signOut } from './firebase';
 import 'dayjs/locale/de';
 import 'dayjs/locale/en-gb'; //TODO
 import SearchResult from './pages/SearchResult';
+import { SearchFilters } from './components/interface';
 
 const rootRoute = new RootRoute({
 	component: () => {
@@ -76,22 +77,10 @@ const loginRoute = new Route({
 	component: Login
 });
 
-type Search = {
-	city: string;
-	sport?: string;
-	date?: string;
-	startTime?: number;
-	endTime?: number;
-	multisport?: boolean;
-	isic?: boolean;
-	freeParking?: boolean;
-	beverage?: boolean;
-};
-
 export const searchRoute = new Route({
 	getParentRoute: () => rootRoute,
 	path: 'search',
-	validateSearch: (search: Record<string, unknown>): Search => ({
+	validateSearch: (search: Record<string, unknown>): SearchFilters => ({
 		city: (search.city as string) ?? 'Praha', //TODO
 		sport: search.sport as string,
 		date: search.date as string,

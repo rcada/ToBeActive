@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
-import { onSnapshot, orderBy, query } from 'firebase/firestore';
+import { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useNavigate } from '@tanstack/router';
 import { Dayjs } from 'dayjs';
 
-import { sportscentersCollection } from '../firebase';
 import { FormSelect } from '../components/library/form/FormSelect';
+import { useSearchOptions } from '../hooks/useSearchOptions';
 
 import Form from './library/form/Form';
 import { getTimeOptions } from './utils/getTimeOptions';
@@ -16,20 +15,20 @@ import { ComboboxOption } from './library/Combobox';
 import CheckListPopper from './ChecklistPopper';
 import Chips from './Chips';
 
-export type SearchProps = {
+export type SearchProps = Partial<{
 	city: ComboboxOption;
-	sport?: ComboboxOption;
-	date?: Dayjs;
-	startTime?: number;
-	endTime?: number;
-	multisport?: boolean;
-	isic?: boolean;
-	freeParking?: boolean;
-	beverage?: boolean;
-};
+	sport: ComboboxOption;
+	date: Dayjs;
+	startTime: number;
+	endTime: number;
+	multisport: boolean;
+	isic: boolean;
+	freeParking: boolean;
+	beverage: boolean;
+}>;
 
 type SearcherProps = {
-	initialValues: Partial<SearchProps>;
+	initialValues: SearchProps;
 };
 
 export const Searcher: React.FC<SearcherProps> = ({ initialValues }) => {
@@ -37,7 +36,7 @@ export const Searcher: React.FC<SearcherProps> = ({ initialValues }) => {
 
 	const navigate = useNavigate();
 
-	const handleSubmit = (values: Partial<SearchProps>) => {
+	const handleSubmit = (values: SearchProps) => {
 		if (!values.city) {
 			setSubmitError('Please enter a city to start searching');
 			return;
@@ -62,7 +61,7 @@ export const Searcher: React.FC<SearcherProps> = ({ initialValues }) => {
 
 	return (
 		<Form onSubmit={handleSubmit} initialValues={initialValues}>
-			<Box height="600px">
+			<Box>
 				<FormBody />
 				{submitError && (
 					<Typography variant="caption" color="error">
@@ -75,42 +74,8 @@ export const Searcher: React.FC<SearcherProps> = ({ initialValues }) => {
 };
 
 const FormBody = () => {
-	const [cities, setCities] = useState<string[]>([]);
-	const [sports, setSports] = useState<string[]>([]);
-
+	const { cities, sports } = useSearchOptions();
 	const timeOptions = getTimeOptions();
-
-	useEffect(() => {
-		const getSportsCentersQuery = query(
-			sportscentersCollection,
-			orderBy('city', 'asc')
-		);
-
-		const sportsCentersUnsubscribe = onSnapshot(
-			getSportsCentersQuery,
-			snapshot => {
-				const distinctCities: string[] = [];
-				const distinctSports: string[] = [];
-				snapshot.forEach(doc => {
-					const data = doc.data();
-					if (!distinctCities.includes(data.city)) {
-						distinctCities.push(data.city);
-					}
-					data.sports.map(sport => {
-						if (!distinctSports.includes(sport.name)) {
-							distinctSports.push(sport.name);
-						}
-					});
-				});
-				setCities(distinctCities);
-				setSports(distinctSports.sort());
-			}
-		);
-
-		return () => {
-			sportsCentersUnsubscribe();
-		};
-	}, []);
 
 	return (
 		<Box>

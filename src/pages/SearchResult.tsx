@@ -1,40 +1,40 @@
 import { useSearch } from '@tanstack/router';
-import dayjs from 'dayjs';
+import { Dialog, Typography } from '@mui/material';
+import { useState } from 'react';
 
 import { searchRoute } from '../App';
 import usePageTitle from '../hooks/usePageTitle';
 import { Searcher } from '../components/Searcher';
+import { retypeSearchFilters } from '../components/utils/retypeSearchFilters';
+import { useSportsCenters } from '../hooks/useSportsCenters';
+import SportCard from '../components/SportCard';
 
 const SearchResult = () => {
-	usePageTitle('Search');
-	const {
-		city,
-		sport,
-		date,
-		startTime,
-		endTime,
-		multisport,
-		isic,
-		freeParking,
-		beverage
-	} = useSearch({
+	const searchFilters = useSearch({
 		from: searchRoute.id
 	});
+	usePageTitle(`${searchFilters.city}: ${searchFilters.sport}`);
+
+	const { filteredSportsCenters } = useSportsCenters(searchFilters);
+
+	const [openDialog, setOpenDialog] = useState<boolean>(false);
 
 	return (
-		<Searcher
-			initialValues={{
-				city: { label: city, value: city },
-				sport: sport ? { label: sport, value: sport } : undefined,
-				date: dayjs(date, 'DD/MM/YYYY'),
-				startTime,
-				endTime,
-				multisport,
-				isic,
-				freeParking,
-				beverage
-			}}
-		/>
+		<>
+			<Dialog open={openDialog}>
+				<Typography>hello</Typography>
+			</Dialog>
+			<Searcher initialValues={retypeSearchFilters(searchFilters)} />
+
+			{filteredSportsCenters.map((sportsCenter, index) => (
+				<SportCard
+					key={index}
+					sportsCenter={sportsCenter}
+					searchFilters={searchFilters}
+					setDialogOpen={setOpenDialog}
+				/>
+			))}
+		</>
 	);
 };
 
