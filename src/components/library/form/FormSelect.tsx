@@ -22,6 +22,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
 	label,
 	withNone = false,
 	required,
+	sx,
 	...rest
 }) => (
 	<Field
@@ -30,7 +31,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
 		name={name}
 	>
 		{props => (
-			<FormControl>
+			<FormControl sx={sx}>
 				{label && <InputLabel id={name}>{label}</InputLabel>}
 				<Select
 					labelId={name}
