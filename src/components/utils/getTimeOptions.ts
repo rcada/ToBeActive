@@ -1,3 +1,9 @@
+import { getTimeFormat } from './getTimeFormat';
+
+/**
+ * Creates all possible time options to select component
+ * @returns all possible time options
+ */
 export const getTimeOptions = () => {
 	const startTime = 400;
 	const endTime = 2200;
@@ -12,15 +18,7 @@ export const getTimeOptions = () => {
 	}
 
 	const timeOptions = timesInHHMM.map(timeInHHMM => {
-		const hour =
-			timeInHHMM < 1000
-				? String(timeInHHMM).substring(0, 1)
-				: String(timeInHHMM).substring(0, 2);
-		const minute =
-			timeInHHMM < 1000
-				? String(timeInHHMM).substring(1)
-				: String(timeInHHMM).substring(2);
-		const time = `${hour}:${minute}`;
+		const time = getTimeFormat(timeInHHMM);
 		return { value: timeInHHMM, label: time };
 	});
 	return timeOptions;

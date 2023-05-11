@@ -1,10 +1,10 @@
-import { SportsCenter } from '../../firebase';
+import { SportsCenterWithId } from '../../firebase';
 import { SearchFilters } from '../interface';
 
 export const filterSportsCenters = (
-	sportsCenters: SportsCenter[],
+	sportsCenters: SportsCenterWithId[],
 	filters: SearchFilters
-): SportsCenter[] =>
+): SportsCenterWithId[] =>
 	sportsCenters.filter(sportsCenter => {
 		if (
 			filters.city &&

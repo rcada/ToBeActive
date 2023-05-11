@@ -1,5 +1,4 @@
 import {
-	Box,
 	Button,
 	Card,
 	CardActions,
@@ -8,15 +7,16 @@ import {
 } from '@mui/material';
 import { useState } from 'react';
 
-import { SportsCenter } from '../firebase';
+import { SportsCenterWithId } from '../firebase';
 import { useTranslation } from '../hooks/useTranslation';
+import useLoggedInUser from '../hooks/useLoggedInUser';
 
 import { SearchFilters } from './interface';
-import Checks from './Checks';
+import SportsCenterInfo from './SportsCenterInfo';
 import ReservationDialogForm from './ReservationDialog';
 
 type SportCardProps = {
-	sportsCenter: SportsCenter;
+	sportsCenter: SportsCenterWithId;
 	searchFilters: SearchFilters;
 };
 
@@ -25,9 +25,7 @@ const SportCard: React.FC<SportCardProps> = ({
 	searchFilters
 }) => {
 	const t = useTranslation();
-
-	const sports = sportsCenter.sports.map(sport => sport.name);
-	const sportsList = sports.join(', ');
+	const user = useLoggedInUser();
 
 	const [openDialog, setOpenDialog] = useState<boolean>(false);
 
@@ -48,40 +46,29 @@ const SportCard: React.FC<SportCardProps> = ({
 						gap: '10px'
 					}}
 				>
-					<Typography variant="h5">{sportsCenter.name}</Typography>
-					<Box
-						width="100%"
-						textAlign="left"
-						gap="10px"
-						display="flex"
-						flexDirection="column"
-					>
-						<Typography variant="body1">{`Sports: ${sportsList}`}</Typography>
-						<Box display="flex" justifyContent="space-between">
-							<Typography variant="body2">{`Opening hours: ${sportsCenter.openTime} - ${sportsCenter.closeTime}`}</Typography>
-							<Typography variant="body2">{`City: ${sportsCenter.city}`}</Typography>
-						</Box>
-						<Box display="flex" justifyContent="space-between" gap="10px">
-							<Checks
-								multisport={sportsCenter.multisport}
-								isic={sportsCenter.isic}
-								beverage={sportsCenter.beverage}
-								freeParking={sportsCenter.beverage}
-							/>
-						</Box>
-					</Box>
+					<SportsCenterInfo sportsCenter={sportsCenter} showSports />
 				</CardContent>
-				<CardActions>
-					<Box
-						display="flex"
-						alignItems="center"
-						justifyContent="end"
-						width="100%"
+				<CardActions
+					sx={{
+						display: 'flex',
+						alignItems: 'center',
+						justifyContent: 'end',
+						gap: '10px',
+						width: '100%'
+					}}
+				>
+					{!user && (
+						<Typography variant="caption" color="error">
+							You need to be logged in to make a reservation
+						</Typography>
+					)}
+					<Button
+						onClick={() => setOpenDialog(true)}
+						variant="outlined"
+						disabled={!user}
 					>
-						<Button onClick={() => setOpenDialog(true)} variant="outlined">
-							Reserve
-						</Button>
-					</Box>
+						Reserve
+					</Button>
 				</CardActions>
 			</Card>
 		</>

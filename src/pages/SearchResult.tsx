@@ -1,4 +1,5 @@
 import { useSearch } from '@tanstack/router';
+import { Container } from '@mui/material';
 
 import { searchRoute } from '../App';
 import usePageTitle from '../hooks/usePageTitle';
@@ -13,22 +14,22 @@ const SearchResult = () => {
 	});
 	usePageTitle(`${searchFilters.city}: ${searchFilters.sport}`);
 
-	const { filteredSportsCenters } = useSportsCenters(searchFilters);
+	const sportsCenters = useSportsCenters(searchFilters);
 
 	return (
-		<>
+		<Container sx={{ width: '100%', height: '100%' }}>
 			<Searcher
 				initialValues={retypeSearchFiltersToSearchProps(searchFilters)}
 			/>
 
-			{filteredSportsCenters.map((sportsCenter, index) => (
+			{sportsCenters.map((sportsCenter, index) => (
 				<SportCard
 					key={index}
 					sportsCenter={sportsCenter}
 					searchFilters={searchFilters}
 				/>
 			))}
-		</>
+		</Container>
 	);
 };
 

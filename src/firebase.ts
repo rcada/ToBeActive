@@ -12,7 +12,8 @@ import {
 	CollectionReference,
 	// doc,
 	// DocumentReference,
-	getFirestore
+	getFirestore,
+	Timestamp
 } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -62,6 +63,8 @@ export type SportsCenter = {
 	freeParking: boolean;
 };
 
+export type SportsCenterWithId = SportsCenter & { id: string };
+
 export type Sport = {
 	name: string;
 	count: number;
@@ -71,3 +74,23 @@ export const sportscentersCollection = collection(
 	db,
 	'sportscenters'
 ) as CollectionReference<SportsCenter>;
+
+export type Reservation = {
+	by: string;
+	submissionDate: Timestamp;
+	date: string; //TODO
+	startTime: number;
+	endTime: number;
+	sportsCenterId: string;
+	sport: string;
+	count: number;
+};
+
+export type ReservationWithId = Reservation & {
+	id: string;
+};
+
+export const reservationCollection = collection(
+	db,
+	'reservations'
+) as CollectionReference<Reservation>;

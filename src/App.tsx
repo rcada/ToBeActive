@@ -23,6 +23,7 @@ import 'dayjs/locale/de';
 import 'dayjs/locale/en-gb'; //TODO
 import SearchResult from './pages/SearchResult';
 import { SearchFilters } from './components/interface';
+import Reservations from './pages/Reservations';
 
 const rootRoute = new RootRoute({
 	component: () => {
@@ -36,6 +37,7 @@ const rootRoute = new RootRoute({
 					<Container>
 						<Toolbar disableGutters sx={{ gap: 3 }}>
 							<ButtonLink to="/">Home</ButtonLink>
+							<ButtonLink to="/reservations">Reservations</ButtonLink>
 							<Box sx={{ flexGrow: 1 }} />
 							{!user ? (
 								<ButtonLink to="/login">{t('login')}</ButtonLink>
@@ -94,7 +96,18 @@ export const searchRoute = new Route({
 	component: SearchResult
 });
 
-const routeTree = rootRoute.addChildren([indexRoute, loginRoute, searchRoute]);
+const reservationsRoute = new Route({
+	getParentRoute: () => rootRoute,
+	path: 'reservations',
+	component: Reservations
+});
+
+const routeTree = rootRoute.addChildren([
+	indexRoute,
+	loginRoute,
+	searchRoute,
+	reservationsRoute
+]);
 
 const router = new Router({ routeTree });
 declare module '@tanstack/router' {
