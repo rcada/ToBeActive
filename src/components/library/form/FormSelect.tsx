@@ -18,6 +18,9 @@ type FormSelectProps = {
 	withNone?: boolean;
 } & SelectProps;
 
+/**
+ * Select component for form
+ */
 export const FormSelect: React.FC<FormSelectProps> = ({
 	name,
 	options,

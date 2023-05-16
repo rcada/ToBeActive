@@ -3,6 +3,11 @@ import { useEffect, useState } from 'react';
 
 import { SportsCenter, sportscentersCollection } from '../firebase';
 
+/**
+ * Gets a sporstcenter based on provided id.
+ * @param id id of a sportscenter
+ * @returns sportscenter
+ */
 export const useSportsCenterById = (id: string) => {
 	const [sportsCenter, setSportsCenter] = useState<SportsCenter>();
 

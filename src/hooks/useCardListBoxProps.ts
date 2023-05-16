@@ -1,5 +1,9 @@
 import { SxProps, useMediaQuery } from '@mui/material';
 
+/**
+ * makes SxProps for list box component
+ * @returns box props
+ */
 export const useCardListBoxProps = () => {
 	const matches = useMediaQuery('(min-width:1050px)');
 

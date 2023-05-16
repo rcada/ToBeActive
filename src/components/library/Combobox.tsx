@@ -9,6 +9,9 @@ export type ComboboxProps = {
 	label: string;
 } & Omit<AutocompleteProps<ComboboxOption, false, false, false>, 'renderInput'>;
 
+/**
+ * Combobox component for better work with Autocomplete from MUI
+ */
 const Combobox: React.FC<ComboboxProps> = ({ label, value, ...rest }) => (
 	<Autocomplete
 		getOptionLabel={option => option.label}

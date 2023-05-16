@@ -5,6 +5,11 @@ import dayjs from 'dayjs';
 
 import { ReservationWithId, reservationCollection } from '../firebase';
 
+/**
+ * Hook for getting reservations from Firebase based on user
+ * @param user logged in user
+ * @returns reservations in lists based on reservation date
+ */
 export const useReservations = (user: User) => {
 	const [pastReservations, setPastReservations] = useState<ReservationWithId[]>(
 		[]

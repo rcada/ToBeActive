@@ -6,6 +6,9 @@ type FormCheckBoxProps = {
 	label: string;
 } & CheckboxProps;
 
+/**
+ * Checkbox form component for form
+ */
 const FormCheckbox: React.FC<FormCheckBoxProps> = ({
 	name,
 	label,

@@ -1,6 +1,12 @@
 import { SportsCenterWithId } from '../../firebase';
 import { SearchFilters } from '../interface';
 
+/**
+ * Filters sports centers with provided filters
+ * @param sportsCenters all sports centers to be filtered
+ * @param filters filters
+ * @returns filtered sports centers
+ */
 export const filterSportsCenters = (
 	sportsCenters: SportsCenterWithId[],
 	filters: SearchFilters

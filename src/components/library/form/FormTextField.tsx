@@ -8,6 +8,10 @@ type FormTextFieldProps = {
 	name: string;
 } & TextFieldProps;
 
+/**
+ *
+ * TextField component for form
+ */
 export const FormTextField: React.FC<FormTextFieldProps> = ({
 	name,
 	required,

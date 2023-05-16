@@ -3,6 +3,10 @@ import { useEffect, useState } from 'react';
 
 import { SportType, sportscentersCollection } from '../firebase';
 
+/**
+ * Gets names of possible cities and sports from Firebase
+ * @returns names of possible cities and sports
+ */
 export const useSearchOptions = () => {
 	const [cities, setCities] = useState<string[]>([]);
 	const [sports, setSports] = useState<SportType[]>([]);

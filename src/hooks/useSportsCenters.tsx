@@ -5,6 +5,11 @@ import { SearchFilters } from '../components/interface';
 import { SportsCenterWithId, sportscentersCollection } from '../firebase';
 import { filterSportsCenters } from '../components/utils/filterSportsCenters';
 
+/**
+ * Gets filtered sportscenters based on provided filters
+ * @param filters
+ * @returns filtered sportscenters
+ */
 export const useSportsCenters = (filters: SearchFilters) => {
 	const [sportsCenters, setSportCenters] = useState<SportsCenterWithId[]>([]);
 	const [filteredSportsCenters, setFilteredSportsCenters] = useState<

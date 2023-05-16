@@ -10,6 +10,9 @@ type FormComboboxProps = {
 	required?: boolean;
 } & ComboboxProps;
 
+/**
+ * Combobox component for form
+ */
 export const FormCombobox: React.FC<FormComboboxProps> = ({
 	name,
 	required,

@@ -9,6 +9,9 @@ type FormDatePickerProps = {
 	required?: boolean;
 } & DatePickerProps<unknown>;
 
+/**
+ * DatePicker component for form
+ */
 export const FormDatePicker: React.FC<FormDatePickerProps> = ({
 	name,
 	required,
