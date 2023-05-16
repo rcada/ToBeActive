@@ -22,6 +22,7 @@
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-final-form": "^6.5.9",
+    "react-flagkit": "^2.0.4",
     "sanitize.css": "^13.0.0"
   },
   "devDependencies": {

@@ -5,8 +5,10 @@ import dayjs from 'dayjs';
 import usePageTitle from '../hooks/usePageTitle';
 import useLoggedInUser from '../hooks/useLoggedInUser';
 import { Searcher } from '../components/Searcher';
+import { useTranslation } from '../hooks/useTranslation';
 
 const Home = () => {
+	const t = useTranslation();
 	usePageTitle('Home');
 	const user = useLoggedInUser();
 	const navigate = useNavigate();
@@ -17,10 +19,12 @@ const Home = () => {
 				<Typography variant="h1">ToBeActive</Typography>
 			</Box>
 			{user ? (
-				<Typography variant="h4">{`Hello ${user.email}! What would you like to do?`}</Typography>
+				<Typography variant="h4">{`${t('hello')} ${user.email}! ${t(
+					'what_do'
+				)}`}</Typography>
 			) : (
 				<Button onClick={() => navigate({ to: '/login' })} variant="outlined">
-					Sign in or register
+					{t('sign_register')}
 				</Button>
 			)}
 			<Searcher

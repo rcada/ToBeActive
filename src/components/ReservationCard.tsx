@@ -10,8 +10,9 @@ import {
 import dayjs from 'dayjs';
 
 import { ReservationWithId } from '../firebase';
+import { useSportsCenterById } from '../hooks/useSportsCenterById';
+import { useTranslation } from '../hooks/useTranslation';
 
-import { useSportsCenterById } from './utils/getSportsCenterById';
 import SportsCenterInfo from './SportsCenterInfo';
 import { getTimeFormat } from './utils/getTimeFormat';
 import { DeleteReservationDialog } from './DeleteReservationDialog';
@@ -25,6 +26,8 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
 	reservation,
 	cancellable = false
 }) => {
+	const t = useTranslation();
+
 	const sportsCenter = useSportsCenterById(reservation.sportsCenterId);
 
 	const [openDialog, setOpenDialog] = useState<boolean>(false);
@@ -59,12 +62,14 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
 						display="flex"
 						flexDirection="column"
 					>
-						<Typography variant="h6">Reservation info:</Typography>
-						<Typography>{`On: ${reservation.date}, From ${getTimeFormat(
-							reservation.startTime
-						)} till ${getTimeFormat(reservation.endTime)}`}</Typography>
-						<Typography>{`Sport: ${reservation.sport}`}</Typography>
-						<Typography>{`Made on: ${dayjs(
+						<Typography variant="h6">{t('res_info')}</Typography>
+						<Typography>{`${t('on')} ${reservation.date}, ${t(
+							'from'
+						)} ${getTimeFormat(reservation.startTime)} ${t(
+							'till'
+						)} ${getTimeFormat(reservation.endTime)}`}</Typography>
+						<Typography>{`${t('sport_')} ${reservation.sport}`}</Typography>
+						<Typography>{`${t('made_on')} ${dayjs(
 							reservation.submissionDate.toDate()
 						).format('DD/MM/YYYY h:mm')}`}</Typography>
 					</Box>
@@ -82,7 +87,7 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
 							variant="outlined"
 							onClick={() => setOpenDialog(true)}
 						>
-							Cancel Reservation
+							{t('cancel_res')}
 						</Button>
 					</CardActions>
 				)}

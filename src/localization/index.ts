@@ -1,4 +1,4 @@
 import en from './en';
-//import cs from './cs';
+import cs from './cs';
 
-export default { en };
+export default { en, cs };

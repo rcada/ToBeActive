@@ -1,12 +1,5 @@
 import { ThemeProvider } from '@emotion/react';
-import {
-	AppBar,
-	Box,
-	Button,
-	CssBaseline,
-	Theme,
-	Toolbar
-} from '@mui/material';
+import { AppBar, Box, Button, CssBaseline, Toolbar } from '@mui/material';
 import { Container } from '@mui/system';
 import {
 	RouterProvider,
@@ -17,9 +10,7 @@ import {
 } from '@tanstack/router';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useState } from 'react';
 
-import { darkTheme, lightTheme } from './theme';
 import Home from './pages/Home';
 import Login from './pages/Login';
 import { LanguageProvider, useTranslation } from './hooks/useTranslation';
@@ -27,17 +18,18 @@ import useLoggedInUser from './hooks/useLoggedInUser';
 import ButtonLink from './components/library/ButtonLink';
 import { signOut } from './firebase';
 import 'dayjs/locale/de';
-import 'dayjs/locale/en-gb'; //TODO
 import SearchResult from './pages/SearchResult';
 import { SearchFilters } from './components/interface';
 import Reservations from './pages/Reservations';
 import NotFound from './pages/NotFound';
+import SettingsPopper from './components/SettingsPopper';
+import { CustomThemeProvider, useTheme } from './hooks/useTheme';
 
 const rootRoute = new RootRoute({
 	component: () => {
 		const user = useLoggedInUser();
 		const t = useTranslation();
-		const [theme, setTheme] = useState<Theme>(darkTheme);
+		const [theme] = useTheme();
 
 		return (
 			<ThemeProvider theme={theme}>
@@ -54,16 +46,20 @@ const rootRoute = new RootRoute({
 					>
 						<Container>
 							<Toolbar disableGutters sx={{ gap: 3 }}>
-								<ButtonLink to="/">Home</ButtonLink>
+								<ButtonLink to="/">{t('home')}</ButtonLink>
 								{user && (
-									<ButtonLink to="/reservations">Reservations</ButtonLink>
+									<ButtonLink to="/reservations">
+										{t('reservations')}
+									</ButtonLink>
 								)}
 								<Box sx={{ flexGrow: 1 }} />
+
 								{!user ? (
 									<ButtonLink to="/login">{t('login')}</ButtonLink>
 								) : (
 									<Button onClick={signOut}>{t('logout')}</Button>
 								)}
+								<SettingsPopper />
 							</Toolbar>
 						</Container>
 					</AppBar>
@@ -104,7 +100,7 @@ export const searchRoute = new Route({
 	getParentRoute: () => rootRoute,
 	path: 'search',
 	validateSearch: (search: Record<string, unknown>): SearchFilters => ({
-		city: (search.city as string) ?? 'Praha', //TODO
+		city: search.city as string,
 		sport: search.sport as string,
 		date: search.date as string,
 		startTime: search.startTime as number,
@@ -148,7 +144,9 @@ declare module '@tanstack/router' {
 const App = () => (
 	<LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale="de">
 		<LanguageProvider>
-			<RouterProvider router={router} />
+			<CustomThemeProvider>
+				<RouterProvider router={router} />
+			</CustomThemeProvider>
 		</LanguageProvider>
 	</LocalizationProvider>
 );

@@ -8,6 +8,8 @@ import {
 } from '@mui/material';
 import { Field } from 'react-final-form';
 
+import { useTranslation } from '../../../hooks/useTranslation';
+
 type FormSelectProps = {
 	name: string;
 	options:
@@ -24,36 +26,41 @@ export const FormSelect: React.FC<FormSelectProps> = ({
 	required,
 	sx,
 	...rest
-}) => (
-	<Field
-		// eslint-disable-next-line @typescript-eslint/no-empty-function
-		validate={required ? value => (value ? false : true) : () => {}}
-		name={name}
-	>
-		{props => (
-			<FormControl sx={sx} error={props.meta.error}>
-				{label && <InputLabel id={name}>{label}</InputLabel>}
-				<Select
-					labelId={name}
-					label={label}
-					error={props.meta.error}
-					MenuProps={{ PaperProps: { style: { maxHeight: 250 } } }}
-					{...props.input}
-					{...rest}
-				>
-					{withNone && (
-						<MenuItem value="">
-							<em>None</em>
-						</MenuItem>
+}) => {
+	const t = useTranslation();
+	return (
+		<Field
+			// eslint-disable-next-line @typescript-eslint/no-empty-function
+			validate={required ? value => (value ? false : true) : () => {}}
+			name={name}
+		>
+			{props => (
+				<FormControl sx={sx} error={props.meta.error}>
+					{label && <InputLabel id={name}>{label}</InputLabel>}
+					<Select
+						labelId={name}
+						label={label}
+						error={props.meta.error}
+						MenuProps={{ PaperProps: { style: { maxHeight: 250 } } }}
+						{...props.input}
+						{...rest}
+					>
+						{withNone && (
+							<MenuItem value="">
+								<em>None</em>
+							</MenuItem>
+						)}
+						{options.map((option, i) => (
+							<MenuItem key={i} value={option.value}>
+								{option.label}
+							</MenuItem>
+						))}
+					</Select>
+					{props.meta.error && (
+						<FormHelperText error>{t('required')}</FormHelperText>
 					)}
-					{options.map((option, i) => (
-						<MenuItem key={i} value={option.value}>
-							{option.label}
-						</MenuItem>
-					))}
-				</Select>
-				{props.meta.error && <FormHelperText error>Required</FormHelperText>}
-			</FormControl>
-		)}
-	</Field>
-);
+				</FormControl>
+			)}
+		</Field>
+	);
+};

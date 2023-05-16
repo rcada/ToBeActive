@@ -4,6 +4,7 @@ import { Box, CircularProgress, Typography } from '@mui/material';
 import { useReservations } from '../hooks/useReservations';
 import { useCardListBoxProps } from '../hooks/useCardListBoxProps';
 import { ReservationWithId } from '../firebase';
+import { useTranslation } from '../hooks/useTranslation';
 
 import { ReservationCard } from './ReservationCard';
 
@@ -12,6 +13,8 @@ type ReservationListProps = {
 };
 
 export const ReservationList: React.FC<ReservationListProps> = ({ user }) => {
+	const t = useTranslation();
+
 	const { pastReservations, todayReservations, futureReservations, loading } =
 		useReservations(user);
 
@@ -21,19 +24,13 @@ export const ReservationList: React.FC<ReservationListProps> = ({ user }) => {
 		loading ? (
 			<CircularProgress />
 		) : (
-			<Typography variant="h4">You dont have any reservations...yet</Typography>
+			<Typography variant="h4">{t('no_res')}</Typography>
 		)
 	) : (
 		<>
-			<Reservations
-				title={`Today's reservations`}
-				reservations={todayReservations}
-			/>
-			<Reservations
-				title="Future reservations"
-				reservations={futureReservations}
-			/>
-			<Reservations title="Past reservations" reservations={pastReservations} />
+			<Reservations title={t('today_res')} reservations={todayReservations} />
+			<Reservations title={t('future_res')} reservations={futureReservations} />
+			<Reservations title={t('past_res')} reservations={pastReservations} />
 		</>
 	);
 };

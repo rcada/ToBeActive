@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useNavigate } from '@tanstack/router';
 import dayjs, { Dayjs } from 'dayjs';
-import { useForm, useFormState } from 'react-final-form';
 
-import { FormSelect } from '../components/library/form/FormSelect';
 import { useSearchOptions } from '../hooks/useSearchOptions';
+import { useTranslation } from '../hooks/useTranslation';
 
 import Form from './library/form/Form';
 import { getTimeOptions } from './utils/getTimeOptions';
@@ -34,13 +33,15 @@ type SearcherProps = {
 };
 
 export const Searcher: React.FC<SearcherProps> = ({ initialValues }) => {
+	const t = useTranslation();
+
 	const [submitError, setSubmitError] = useState<string>();
 
 	const navigate = useNavigate();
 
 	const handleSubmit = (values: SearchProps) => {
 		if (!values.city) {
-			setSubmitError('Please enter a city to start searching');
+			setSubmitError(t('enter_city'));
 			return;
 		}
 		setSubmitError(undefined);
@@ -76,6 +77,8 @@ export const Searcher: React.FC<SearcherProps> = ({ initialValues }) => {
 };
 
 const FormBody = () => {
+	const t = useTranslation();
+
 	const { cities, sports } = useSearchOptions();
 	const timeOptions = getTimeOptions();
 
@@ -85,14 +88,14 @@ const FormBody = () => {
 				<Box display="flex" gap="10px" maxWidth="500px">
 					<FormCombobox
 						name="city"
-						options={cities.map(city => ({ value: city, label: city }))} //TODO
-						label="City"
+						options={cities.map(city => ({ value: city, label: city }))}
+						label={t('city')}
 						sx={{ width: '250px' }}
 					/>
 					<FormCombobox
 						name="sport"
-						options={sports.map(sport => ({ value: sport, label: sport }))} //TODO
-						label="Sport"
+						options={sports.map(sport => ({ value: sport, label: t(sport) }))}
+						label={t('sport')}
 						sx={{ width: '250px' }}
 					/>
 				</Box>
@@ -101,7 +104,7 @@ const FormBody = () => {
 						name="date"
 						sx={{ minWidth: '180px' }}
 						minDate={dayjs(new Date())}
-						label="Date"
+						label={t('date')}
 					/>
 					<StartEndTime options={timeOptions} sx={{ width: 100 }} withNone />
 					<CheckListPopper />
@@ -111,7 +114,7 @@ const FormBody = () => {
 						size="large"
 						endIcon={<SearchRoundedIcon />}
 					>
-						Search
+						{t('search')}
 					</Button>
 				</Box>
 			</Box>

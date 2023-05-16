@@ -59,7 +59,7 @@ const SportCard: React.FC<SportCardProps> = ({
 				>
 					{!user && (
 						<Typography variant="caption" color="error">
-							You need to be logged in to make a reservation
+							{t('must_log_in')}
 						</Typography>
 					)}
 					<Button
@@ -67,7 +67,7 @@ const SportCard: React.FC<SportCardProps> = ({
 						variant="outlined"
 						disabled={!user}
 					>
-						Reserve
+						{t('reserve')}
 					</Button>
 				</CardActions>
 			</Card>

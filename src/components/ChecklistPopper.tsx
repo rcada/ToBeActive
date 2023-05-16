@@ -1,11 +1,15 @@
-import { Box, IconButton, Paper, Popper } from '@mui/material';
-import React from 'react';
+import { IconButton, Paper, Popper } from '@mui/material';
+import React, { useState } from 'react';
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
+
+import { useTranslation } from '../hooks/useTranslation';
 
 import FormCheckbox from './library/form/FormCheckbox';
 
 const CheckListPopper = () => {
-	const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+	const t = useTranslation();
+
+	const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
 	const handleClick = (event: React.MouseEvent<HTMLElement>) => {
 		setAnchorEl(anchorEl ? null : event.currentTarget);
@@ -24,13 +28,13 @@ const CheckListPopper = () => {
 				<TuneRoundedIcon />
 			</IconButton>
 			<Popper id={id} open={open} anchorEl={anchorEl}>
-				<Paper>
-					<Box display="flex" flexDirection="column" padding="10px">
-						<FormCheckbox label="Multisport" name="multisport" />
-						<FormCheckbox label="ISIC" name="isic" />
-						<FormCheckbox label="Free parking" name="freeParking" />
-						<FormCheckbox label="Beverage" name="beverage" />
-					</Box>
+				<Paper
+					sx={{ display: 'flex', flexDirection: 'column', padding: '10px' }}
+				>
+					<FormCheckbox label={t('multisport')} name="multisport" />
+					<FormCheckbox label={t('isic')} name="isic" />
+					<FormCheckbox label={t('free_parking')} name="freeParking" />
+					<FormCheckbox label={t('beverage')} name="beverage" />
 				</Paper>
 			</Popper>
 		</>

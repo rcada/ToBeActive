@@ -27,7 +27,6 @@ import { FormCombobox } from './library/form/FormCombobox';
 import { ComboboxOption } from './library/Combobox';
 import { retypeSearchFiltersToReservationProps } from './utils/retypeSearchFilters';
 import { FormDatePicker } from './library/form/FormDatePicker';
-import { FormSelect } from './library/form/FormSelect';
 import { getTimeOptions } from './utils/getTimeOptions';
 import StartEndTime from './StartEndTime';
 
@@ -74,7 +73,7 @@ const ReservationDialogForm: React.FC<ReservationDialogProps> = ({
 				const currentDate = new Date();
 				const reservation: Reservation = {
 					by: user.email,
-					count: 1, //TODO
+					count: 1,
 					date: values.date.format('DD/MM/YYYY'),
 					startTime: values.startTime,
 					endTime: values.endTime,
@@ -98,7 +97,7 @@ const ReservationDialogForm: React.FC<ReservationDialogProps> = ({
 				initialValues={retypeSearchFiltersToReservationProps(searchFilters)}
 				onSubmit={handleSubmit}
 			>
-				<DialogTitle>Make a reservation</DialogTitle>
+				<DialogTitle>{t('make_res')}</DialogTitle>
 				<DialogContent
 					sx={{
 						display: 'flex',
@@ -108,12 +107,12 @@ const ReservationDialogForm: React.FC<ReservationDialogProps> = ({
 					}}
 				>
 					<Box display="flex" justifyContent="space-between">
-						<Typography>{`In Facility: ${sportsCenter.name}`}</Typography>
-						<Typography>{`City: ${sportsCenter.city}`}</Typography>
+						<Typography>{`${t('facility')} ${sportsCenter.name}`}</Typography>
+						<Typography>{`${t('city_')} ${sportsCenter.city}`}</Typography>
 					</Box>
 					<FormCombobox
 						name="sport"
-						label="Sport"
+						label={t('sport')}
 						options={sportsCenter.sports.map(sport => ({
 							label: sport.name,
 							value: sport.name
@@ -121,9 +120,10 @@ const ReservationDialogForm: React.FC<ReservationDialogProps> = ({
 						required
 					/>
 					<FormDatePicker
-						name="date"
+						name={t('date')}
 						label="Date"
 						minDate={dayjs(new Date())}
+						required
 					/>
 					<Box display="flex" gap="10px">
 						<StartEndTime options={timeOptions} sx={{ flex: 1 }} required />
@@ -140,10 +140,10 @@ const ReservationDialogForm: React.FC<ReservationDialogProps> = ({
 						color="error"
 						onClick={() => setOpen(false)}
 					>
-						Cancel
+						{t('cancel')}
 					</Button>
 					<Button type="submit" variant="contained" color="primary">
-						Reserve
+						{t('reserve')}
 					</Button>
 				</DialogActions>
 			</Form>

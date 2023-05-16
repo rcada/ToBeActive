@@ -1,11 +1,11 @@
 import { onSnapshot, orderBy, query } from 'firebase/firestore';
 import { useEffect, useState } from 'react';
 
-import { sportscentersCollection } from '../firebase';
+import { SportType, sportscentersCollection } from '../firebase';
 
 export const useSearchOptions = () => {
 	const [cities, setCities] = useState<string[]>([]);
-	const [sports, setSports] = useState<string[]>([]);
+	const [sports, setSports] = useState<SportType[]>([]);
 
 	useEffect(() => {
 		const getSportsCentersQuery = query(
@@ -17,7 +17,7 @@ export const useSearchOptions = () => {
 			getSportsCentersQuery,
 			snapshot => {
 				const distinctCities: string[] = [];
-				const distinctSports: string[] = [];
+				const distinctSports: SportType[] = [];
 				snapshot.forEach(doc => {
 					const data = doc.data();
 					if (!distinctCities.includes(data.city)) {

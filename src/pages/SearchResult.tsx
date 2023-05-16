@@ -8,11 +8,13 @@ import { retypeSearchFiltersToSearchProps } from '../components/utils/retypeSear
 import { useSportsCenters } from '../hooks/useSportsCenters';
 import SportCard from '../components/SportCard';
 import { useCardListBoxProps } from '../hooks/useCardListBoxProps';
+import { useTranslation } from '../hooks/useTranslation';
 
 const SearchResult = () => {
 	const searchFilters = useSearch({
 		from: searchRoute.id
 	});
+	const t = useTranslation();
 	usePageTitle(`${searchFilters.city}: ${searchFilters.sport}`);
 
 	const boxProps = useCardListBoxProps();
@@ -29,9 +31,7 @@ const SearchResult = () => {
 				loading ? (
 					<CircularProgress />
 				) : (
-					<Typography variant="h5">
-						{`Unfortunately we did not find any facilities that match your conditions. :(`}
-					</Typography>
+					<Typography variant="h5">{t('not_found_facilities')}</Typography>
 				)
 			) : sportsCenters.length === 1 ? (
 				<SportCard

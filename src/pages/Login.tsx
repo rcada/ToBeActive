@@ -36,7 +36,7 @@ const Login = () => {
 	const handleSubmit = async (values: Partial<LoginValues>) => {
 		setSubmitLoading(true);
 		if (!values.email || !values.password) {
-			setSubmitError('Please fill in email and password.');
+			setSubmitError(t('fill_email_pass'));
 			return;
 		}
 		try {
@@ -46,7 +46,7 @@ const Login = () => {
 			navigate({ to: '/' });
 		} catch (err) {
 			setSubmitError(
-				(err as { message?: string })?.message ?? 'Unknown error occurred'
+				(err as { message?: string })?.message ?? t('unknown_error')
 			);
 		}
 		setSubmitLoading(false);
@@ -127,16 +127,18 @@ const SignUp: FC<SignElementProps> = ({ setSignIn, loading }) => {
 };
 
 const Credentials = () => {
+	const t = useTranslation();
+
 	const [showPassword, setShowPassword] = useState(false);
 
 	const handleClickShowPassword = () => setShowPassword(show => !show);
 
 	return (
 		<Box display="flex" flexDirection="column" gap="20px" width="400px">
-			<FormTextField name="email" label="Email" type="email" required />
+			<FormTextField name="email" label={t('email')} type="email" required />
 			<FormTextField
 				name="password"
-				label="Password"
+				label={t('password')}
 				type={showPassword ? 'text' : 'password'}
 				InputProps={{
 					endAdornment: (

@@ -65,8 +65,21 @@ export type SportsCenter = {
 
 export type SportsCenterWithId = SportsCenter & { id: string };
 
+export type SportType =
+	| 'badminton'
+	| 'basketball'
+	| 'box'
+	| 'dance'
+	| 'pilates'
+	| 'soccer'
+	| 'squash'
+	| 'swimming'
+	| 'tennis'
+	| 'table-tennis'
+	| 'volleyball';
+
 export type Sport = {
-	name: string;
+	name: SportType;
 	count: number;
 };
 
@@ -78,7 +91,7 @@ export const sportscentersCollection = collection(
 export type Reservation = {
 	by: string;
 	submissionDate: Timestamp;
-	date: string; //TODO
+	date: string;
 	startTime: number;
 	endTime: number;
 	sportsCenterId: string;

@@ -10,6 +10,7 @@ import { deleteDoc, doc } from 'firebase/firestore';
 import { useState } from 'react';
 
 import { ReservationWithId, reservationCollection } from '../firebase';
+import { useTranslation } from '../hooks/useTranslation';
 
 type DeleteReservationDialogProps = {
 	reservation: ReservationWithId;
@@ -19,6 +20,8 @@ type DeleteReservationDialogProps = {
 export const DeleteReservationDialog: React.FC<
 	DeleteReservationDialogProps
 > = ({ reservation, setOpen, ...rest }) => {
+	const t = useTranslation();
+
 	const [error, setError] = useState<string>();
 
 	const deleteReservation = async () => {
@@ -33,7 +36,7 @@ export const DeleteReservationDialog: React.FC<
 
 	return (
 		<Dialog {...rest}>
-			<DialogTitle>Are you sure?</DialogTitle>
+			<DialogTitle>{t('you_sure')}</DialogTitle>
 			{error && (
 				<Typography variant="caption" color="error">
 					{error}
@@ -41,10 +44,10 @@ export const DeleteReservationDialog: React.FC<
 			)}
 			<DialogActions sx={{ display: 'flex', justifyContent: 'space-between' }}>
 				<Button variant="outlined" onClick={() => setOpen(false)}>
-					No
+					{t('no')}
 				</Button>
 				<Button variant="contained" onClick={deleteReservation}>
-					Yes
+					{t('yes')}
 				</Button>
 			</DialogActions>
 		</Dialog>
