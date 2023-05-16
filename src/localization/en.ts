@@ -7,5 +7,7 @@ export default {
 	'login.signUp.question': 'Do you already have an acount?',
 	'login.signUp.here': 'Sign up here',
 	'login.signIn.here': 'Sign in here',
-	'logout': 'Logout'
+	'logout': 'Logout',
+	'start': 'Start',
+	'end': 'End'
 };

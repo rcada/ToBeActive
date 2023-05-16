@@ -10,8 +10,10 @@ export const useSportsCenters = (filters: SearchFilters) => {
 	const [filteredSportsCenters, setFilteredSportsCenters] = useState<
 		SportsCenterWithId[]
 	>([]);
+	const [loading, setLoading] = useState<boolean>(true);
 
 	useEffect(() => {
+		setLoading(true);
 		const sportsCentersUnsubscribe = onSnapshot(
 			sportscentersCollection,
 			snapshot => {
@@ -20,7 +22,6 @@ export const useSportsCenters = (filters: SearchFilters) => {
 				);
 			}
 		);
-
 		return () => {
 			sportsCentersUnsubscribe();
 		};
@@ -28,9 +29,12 @@ export const useSportsCenters = (filters: SearchFilters) => {
 
 	useEffect(() => {
 		if (sportsCenters.length > 0) {
+			setLoading(true);
+			setFilteredSportsCenters([]);
 			setFilteredSportsCenters(filterSportsCenters(sportsCenters, filters));
+			setLoading(false);
 		}
 	}, [filters, sportsCenters]);
 
-	return filteredSportsCenters;
+	return { filteredSportsCenters, loading };
 };

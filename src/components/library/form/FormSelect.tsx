@@ -31,7 +31,7 @@ export const FormSelect: React.FC<FormSelectProps> = ({
 		name={name}
 	>
 		{props => (
-			<FormControl sx={sx}>
+			<FormControl sx={sx} error={props.meta.error}>
 				{label && <InputLabel id={name}>{label}</InputLabel>}
 				<Select
 					labelId={name}

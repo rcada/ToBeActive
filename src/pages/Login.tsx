@@ -1,6 +1,7 @@
 import {
 	Box,
 	Button,
+	CircularProgress,
 	IconButton,
 	InputAdornment,
 	Paper,
@@ -30,8 +31,10 @@ const Login = () => {
 
 	const [isSignIn, setSignIn] = useState(true);
 	const [submitError, setSubmitError] = useState<string>();
+	const [submitLoading, setSubmitLoading] = useState<boolean>(false);
 
 	const handleSubmit = async (values: Partial<LoginValues>) => {
+		setSubmitLoading(true);
 		if (!values.email || !values.password) {
 			setSubmitError('Please fill in email and password.');
 			return;
@@ -46,15 +49,16 @@ const Login = () => {
 				(err as { message?: string })?.message ?? 'Unknown error occurred'
 			);
 		}
+		setSubmitLoading(false);
 	};
 
 	return (
 		<Form onSubmit={handleSubmit}>
 			<Paper sx={{ display: 'flex', flexDirection: 'column', p: 4, gap: 2 }}>
 				{isSignIn ? (
-					<SignIn setSignIn={setSignIn} />
+					<SignIn setSignIn={setSignIn} loading={submitLoading} />
 				) : (
-					<SignUp setSignIn={setSignIn} />
+					<SignUp setSignIn={setSignIn} loading={submitLoading} />
 				)}
 				{submitError && (
 					<Typography variant="caption" color="error.main">
@@ -68,9 +72,10 @@ const Login = () => {
 
 type SignElementProps = {
 	setSignIn: (arg0: boolean) => void;
+	loading: boolean;
 };
 
-const SignIn: FC<SignElementProps> = ({ setSignIn }) => {
+const SignIn: FC<SignElementProps> = ({ setSignIn, loading }) => {
 	const t = useTranslation();
 	return (
 		<>
@@ -82,14 +87,20 @@ const SignIn: FC<SignElementProps> = ({ setSignIn }) => {
 					{t('login.signUp.here')}
 				</Button>
 			</Box>
-			<Button variant="outlined" size="large" type="submit">
+			<Button
+				variant="outlined"
+				size="large"
+				type="submit"
+				disabled={loading}
+				endIcon={loading && <CircularProgress size="20px" />}
+			>
 				{t('login.signIn')}
 			</Button>
 		</>
 	);
 };
 
-const SignUp: FC<SignElementProps> = ({ setSignIn }) => {
+const SignUp: FC<SignElementProps> = ({ setSignIn, loading }) => {
 	const t = useTranslation();
 	return (
 		<>
@@ -102,7 +113,13 @@ const SignUp: FC<SignElementProps> = ({ setSignIn }) => {
 				</Button>
 			</Box>
 
-			<Button variant="outlined" size="large" type="submit">
+			<Button
+				variant="outlined"
+				size="large"
+				type="submit"
+				disabled={loading}
+				endIcon={loading && <CircularProgress size="20px" />}
+			>
 				{t('login.signUp')}
 			</Button>
 		</>

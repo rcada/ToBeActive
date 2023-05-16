@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Button, Typography } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import { useNavigate } from '@tanstack/router';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
+import { useForm, useFormState } from 'react-final-form';
 
 import { FormSelect } from '../components/library/form/FormSelect';
 import { useSearchOptions } from '../hooks/useSearchOptions';
@@ -14,6 +15,7 @@ import { FormDatePicker } from './library/form/FormDatePicker';
 import { ComboboxOption } from './library/Combobox';
 import CheckListPopper from './ChecklistPopper';
 import Chips from './Chips';
+import StartEndTime from './StartEndTime';
 
 export type SearchProps = Partial<{
 	city: ComboboxOption;
@@ -78,51 +80,42 @@ const FormBody = () => {
 	const timeOptions = getTimeOptions();
 
 	return (
-		<Box>
-			<Box display="flex" gap="10px">
-				<FormCombobox
-					name="city"
-					options={cities.map(city => ({ value: city, label: city }))} //TODO
-					label="City"
-					sx={{ width: '250px' }}
-				/>
-				<FormCombobox
-					name="sport"
-					options={sports.map(sport => ({ value: sport, label: sport }))} //TODO
-					label="Sport"
-					sx={{ width: '250px' }}
-				/>
-				<FormDatePicker
-					format="DD/MM/YYYY"
-					name="date"
-					sx={{ minWidth: '180px' }}
-					label="Date"
-				/>
-				<FormSelect
-					name="startTime"
-					label="Start"
-					withNone
-					sx={{ width: 100 }}
-					options={timeOptions}
-				/>
-				<FormSelect
-					name="endTime"
-					withNone
-					label="End"
-					sx={{ width: 100 }}
-					options={timeOptions}
-				/>
-				<CheckListPopper />
-				<Button
-					type="submit"
-					variant="contained"
-					size="large"
-					endIcon={<SearchRoundedIcon />}
-				>
-					Search
-				</Button>
+		<Box display="flex" flexDirection="column" justifyContent="center">
+			<Box display="flex" gap="10px" flexWrap="wrap" justifyContent="center">
+				<Box display="flex" gap="10px" maxWidth="500px">
+					<FormCombobox
+						name="city"
+						options={cities.map(city => ({ value: city, label: city }))} //TODO
+						label="City"
+						sx={{ width: '250px' }}
+					/>
+					<FormCombobox
+						name="sport"
+						options={sports.map(sport => ({ value: sport, label: sport }))} //TODO
+						label="Sport"
+						sx={{ width: '250px' }}
+					/>
+				</Box>
+				<Box display="flex" gap="10px" maxWidth="600px">
+					<FormDatePicker
+						name="date"
+						sx={{ minWidth: '180px' }}
+						minDate={dayjs(new Date())}
+						label="Date"
+					/>
+					<StartEndTime options={timeOptions} sx={{ width: 100 }} withNone />
+					<CheckListPopper />
+					<Button
+						type="submit"
+						variant="contained"
+						size="large"
+						endIcon={<SearchRoundedIcon />}
+					>
+						Search
+					</Button>
+				</Box>
 			</Box>
-			<Box display="flex" gap="10px" paddingY="10px">
+			<Box display="flex" gap="10px" paddingY="10px" justifyContent="center">
 				<Chips />
 			</Box>
 		</Box>

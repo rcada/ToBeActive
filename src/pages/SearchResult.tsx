@@ -1,5 +1,5 @@
 import { useSearch } from '@tanstack/router';
-import { Container } from '@mui/material';
+import { Box, CircularProgress, Typography } from '@mui/material';
 
 import { searchRoute } from '../App';
 import usePageTitle from '../hooks/usePageTitle';
@@ -7,6 +7,7 @@ import { Searcher } from '../components/Searcher';
 import { retypeSearchFiltersToSearchProps } from '../components/utils/retypeSearchFilters';
 import { useSportsCenters } from '../hooks/useSportsCenters';
 import SportCard from '../components/SportCard';
+import { useCardListBoxProps } from '../hooks/useCardListBoxProps';
 
 const SearchResult = () => {
 	const searchFilters = useSearch({
@@ -14,22 +15,41 @@ const SearchResult = () => {
 	});
 	usePageTitle(`${searchFilters.city}: ${searchFilters.sport}`);
 
-	const sportsCenters = useSportsCenters(searchFilters);
+	const boxProps = useCardListBoxProps();
+
+	const { filteredSportsCenters: sportsCenters, loading } =
+		useSportsCenters(searchFilters);
 
 	return (
-		<Container sx={{ width: '100%', height: '100%' }}>
+		<>
 			<Searcher
 				initialValues={retypeSearchFiltersToSearchProps(searchFilters)}
 			/>
-
-			{sportsCenters.map((sportsCenter, index) => (
+			{sportsCenters.length === 0 ? (
+				loading ? (
+					<CircularProgress />
+				) : (
+					<Typography variant="h5">
+						{`Unfortunately we did not find any facilities that match your conditions. :(`}
+					</Typography>
+				)
+			) : sportsCenters.length === 1 ? (
 				<SportCard
-					key={index}
-					sportsCenter={sportsCenter}
+					sportsCenter={sportsCenters[0]}
 					searchFilters={searchFilters}
 				/>
-			))}
-		</Container>
+			) : (
+				<Box sx={boxProps}>
+					{sportsCenters.map((sportsCenter, index) => (
+						<SportCard
+							key={index}
+							sportsCenter={sportsCenter}
+							searchFilters={searchFilters}
+						/>
+					))}
+				</Box>
+			)}
+		</>
 	);
 };
 

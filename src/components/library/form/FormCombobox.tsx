@@ -1,5 +1,6 @@
 import React from 'react';
 import { Field } from 'react-final-form';
+import { FormControl, FormHelperText } from '@mui/material';
 
 import Combobox, { ComboboxProps } from '../Combobox';
 
@@ -11,6 +12,7 @@ type FormComboboxProps = {
 export const FormCombobox: React.FC<FormComboboxProps> = ({
 	name,
 	required,
+	sx,
 	...rest
 }) => (
 	<Field
@@ -19,13 +21,16 @@ export const FormCombobox: React.FC<FormComboboxProps> = ({
 		name={name}
 	>
 		{props => (
-			<Combobox
-				onChange={(_e, value) => props.input.onChange(value)}
-				onBlur={props.input.onBlur}
-				onFocus={props.input.onFocus}
-				value={props.input.value === '' ? null : props.input.value}
-				{...rest}
-			/>
+			<FormControl sx={sx} error={props.meta.error}>
+				<Combobox
+					onChange={(_e, value) => props.input.onChange(value)}
+					onBlur={props.input.onBlur}
+					onFocus={props.input.onFocus}
+					value={props.input.value === '' ? null : props.input.value}
+					{...rest}
+				/>
+				{props.meta.error && <FormHelperText error>Required</FormHelperText>}
+			</FormControl>
 		)}
 	</Field>
 );

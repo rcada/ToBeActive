@@ -8,7 +8,7 @@ import {
 	DialogTitle,
 	Typography
 } from '@mui/material';
-import { Dayjs } from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import { useNavigate } from '@tanstack/router';
 import { Timestamp, addDoc } from 'firebase/firestore';
 import { useState } from 'react';
@@ -29,6 +29,7 @@ import { retypeSearchFiltersToReservationProps } from './utils/retypeSearchFilte
 import { FormDatePicker } from './library/form/FormDatePicker';
 import { FormSelect } from './library/form/FormSelect';
 import { getTimeOptions } from './utils/getTimeOptions';
+import StartEndTime from './StartEndTime';
 
 export type ReservatioProps = Partial<{
 	sport: ComboboxOption;
@@ -106,8 +107,9 @@ const ReservationDialogForm: React.FC<ReservationDialogProps> = ({
 						gap: '10px'
 					}}
 				>
-					<Box display="flex">
-						<Typography>{`In Facility: ${sportsCenter.name} in ${sportsCenter.city}`}</Typography>
+					<Box display="flex" justifyContent="space-between">
+						<Typography>{`In Facility: ${sportsCenter.name}`}</Typography>
+						<Typography>{`City: ${sportsCenter.city}`}</Typography>
 					</Box>
 					<FormCombobox
 						name="sport"
@@ -118,14 +120,13 @@ const ReservationDialogForm: React.FC<ReservationDialogProps> = ({
 						}))}
 						required
 					/>
-					<FormDatePicker name="date" label="Date" />
+					<FormDatePicker
+						name="date"
+						label="Date"
+						minDate={dayjs(new Date())}
+					/>
 					<Box display="flex" gap="10px">
-						<FormSelect
-							name="startTime"
-							options={timeOptions}
-							sx={{ flex: 1 }}
-						/>
-						<FormSelect name="endTime" options={timeOptions} sx={{ flex: 1 }} />
+						<StartEndTime options={timeOptions} sx={{ flex: 1 }} required />
 					</Box>
 					{submitError && (
 						<Typography variant="caption" color="error">

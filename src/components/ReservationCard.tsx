@@ -10,18 +10,20 @@ import {
 import dayjs from 'dayjs';
 
 import { ReservationWithId } from '../firebase';
-import { useSportsCenterById } from '../hooks/getSportsCenterById';
 
+import { useSportsCenterById } from './utils/getSportsCenterById';
 import SportsCenterInfo from './SportsCenterInfo';
 import { getTimeFormat } from './utils/getTimeFormat';
 import { DeleteReservationDialog } from './DeleteReservationDialog';
 
 type ReservationCardProps = {
 	reservation: ReservationWithId;
+	cancellable?: boolean;
 };
 
 export const ReservationCard: React.FC<ReservationCardProps> = ({
-	reservation
+	reservation,
+	cancellable = false
 }) => {
 	const sportsCenter = useSportsCenterById(reservation.sportsCenterId);
 
@@ -67,17 +69,23 @@ export const ReservationCard: React.FC<ReservationCardProps> = ({
 						).format('DD/MM/YYYY h:mm')}`}</Typography>
 					</Box>
 				</CardContent>
-				<CardActions
-					sx={{ display: 'flex', alignItems: 'center', justifyContent: 'end' }}
-				>
-					<Button
-						color="error"
-						variant="outlined"
-						onClick={() => setOpenDialog(true)}
+				{cancellable && (
+					<CardActions
+						sx={{
+							display: 'flex',
+							alignItems: 'center',
+							justifyContent: 'end'
+						}}
 					>
-						Cancel Reservation
-					</Button>
-				</CardActions>
+						<Button
+							color="error"
+							variant="outlined"
+							onClick={() => setOpenDialog(true)}
+						>
+							Cancel Reservation
+						</Button>
+					</CardActions>
+				)}
 			</Card>
 		</>
 	);
