@@ -1,7 +1,7 @@
 This is a project to a React course PV247 on FI MUNI.
 
 **Team members:** Roman Čada 527380, Yury Vernigorov 517535
-**Deploy url:** TODO
+**Deploy url:** https://to-be-active.vercel.app
 
 # ToBeActive
 
