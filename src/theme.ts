@@ -14,8 +14,7 @@ declare module '@mui/material/styles' {
 export const darkTheme = createTheme({
 	palette: {
 		primary: { main: '#E45321' },
-		mode: 'dark',
-		appBar: '#272727'
+		mode: 'dark'
 	}
 });
 

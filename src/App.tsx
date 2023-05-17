@@ -38,10 +38,7 @@ const rootRoute = new RootRoute({
 					<AppBar
 						position="sticky"
 						sx={{
-							bgcolor:
-								theme.palette.mode === 'light'
-									? theme.palette.appBar
-									: undefined
+							bgcolor: theme.palette.appBar
 						}}
 					>
 						<Container>
